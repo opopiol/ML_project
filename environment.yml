@@ -13,4 +13,4 @@ dependencies:
  - streamlit
  - seaborn
  - altair
- - pandas-profiling
+ - scikit-learn
