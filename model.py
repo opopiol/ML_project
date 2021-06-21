@@ -9,7 +9,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
 from sklearn import svm
-from imblearn.over_sampling import SMOTE
+
 
 
 #import train dataset
@@ -37,6 +37,8 @@ clf = LogisticRegression(random_state=0).fit(X, y)
 svc = svm.SVC()
 svc.fit(X, y)
 
+knn = KNeighborsClassifier().fit(X, y)
+
 
 pipe = Pipeline([('pca', pca),
                 ('classifier', LogisticRegression())
@@ -46,6 +48,9 @@ search_space = [{'classifier': [LogisticRegression()],
                  'classifier__penalty': ['l1'],
                  'classifier__class_weight': [None, "balanced"],
                  'classifier__C': np.logspace(1,4,10)},
+                {'classifier': [KNeighborsClassifier()],
+                 'classifier__n_neighbors': [2, 4, 6, 8, 10, 20],
+                 'classifier__algorithm': ["auto"]},
                 {'classifier': [SVC()],
                  'classifier__kernel': ["linear", "rbf", "poly"],
                  'classifier__class_weight': [None, "balanced"],
@@ -65,4 +70,4 @@ best_model = grid_search.fit(X, y.values)
 
 
 print(best_model.best_estimator_)
-print("The mean accuracy of the model is:",best_model.score(features, target))
+print("The mean accuracy of the model is:",best_model.score(X, y))
