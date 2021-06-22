@@ -22,40 +22,59 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 y = y['y'].apply(lambda x: 1 if x == -1 else 0)
 
 #scale data
+scaler = StandardScaler()
 
-standardizer = StandardScaler()
-
-X_train_scale = standardizer.fit_transform(X_train)
-y_train_scale = standardizer.fit_transform(y_train)
+X_train_scale = scaler.fit_transform(X_train)
+y_train_scale = scaler.fit_transform(y_train)
 
 #PCA
 pca = PCA(n_components=2, whiten=True)
 X_pca = pca.fit_transform(X_train_scale)
 
+#LogisticRegression
 clf = LogisticRegression(random_state=0).fit(X, y)
 
+#SVC
 svc = svm.SVC()
 svc.fit(X, y)
 
+#KNeighborsClassifier
 knn = KNeighborsClassifier().fit(X, y)
 
 
-pipe = Pipeline([('pca', pca),
+
+
+#creating pipeline
+
+pipe = Pipeline([('scaler', scaler), ('pca', pca),
                 ('classifier', LogisticRegression())
             ])
+
+
 search_space = [{'classifier': [LogisticRegression()],
-                 'classifier__solver': ["warn"],
-                 'classifier__penalty': ['l1'],
-                 'classifier__class_weight': [None, "balanced"],
+                 'classifier__solver': ['warn', 'liblinear'],
+                 'classifier__penalty': ['l1', 'l2'],
+                 'classifier__class_weight': [None, 'balanced'],
                  'classifier__C': np.logspace(1,4,10)},
                 {'classifier': [KNeighborsClassifier()],
                  'classifier__n_neighbors': [2, 4, 6, 8, 10, 20],
-                 'classifier__algorithm': ["auto"]},
+                 'classifier__algorithm': ['auto']},
                 {'classifier': [SVC()],
-                 'classifier__kernel': ["linear", "rbf", "poly"],
-                 'classifier__class_weight': [None, "balanced"],
-                 'classifier__gamma': ["scale"],
-                'classifier__C': np.logspace(1,4,10)}]
+                 'classifier__kernel': ['linear', 'rbf', 'poly'],
+                 'classifier__class_weight': [None, 'balanced'],
+                 'classifier__gamma': ['scale', 'auto'],
+                 'classifier__C': np.logspace(1,4,10)},
+                {'classifier': [RandomForestClassifier()],
+                 'classifier__n_estimators': [10,20,50,100,200],
+                 'classifier__criterion': ['gini', 'entropy'],
+                 'classifier__max_depth': [2,5,10,None],
+                 'classifier__max_features': ['auto', 'sqrt', 'log2'],
+                 'classifier__class_weight': ['balanced', 'balanced_subsample']},
+                {'estimator': [DecisionTreeClassifier()],
+                 'estimator__criterion': ['gini', 'entropy'],
+                 'estimator__class_weight': ['balanced'],
+                 'estimator__splitter': ['best', 'random'],
+                 'estimator__max_depth': [2,5,10,None]}]
 
 
 grid_search = GridSearchCV(pipe,
