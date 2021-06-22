@@ -40,6 +40,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
 #y = y['y'].apply(lambda x: 1 if x == -1 else 0)
 
+
 #baseline
 strategies = ['stratified', 'most_frequent', 'prior', 'uniform']
 
@@ -51,6 +52,7 @@ for i in strategies:
     print(f'For {i} strategy score is {score}')
     plt.bar(i, score)
 
+
 #scaling data
 
 scaler = StandardScaler()
@@ -58,10 +60,12 @@ scaler = StandardScaler()
 X_train_scale = scaler.fit_transform(X_train)
 y_train_scale = scaler.fit_transform(y_train)
 
+
 #PCA
 
 pca = PCA(n_components=2, whiten=True)
 X_pca = pca.fit_transform(X_train_scale)
+
 
 #Logistic Regression
 
@@ -76,13 +80,16 @@ knn = KNeighborsClassifier().fit(X, y)
 svc = svm.SVC()
 svc.fit(X, y)
 
+
 #RandomForestClassifier
 
 rnf = RandomForestClassifier().fit(X, y)
 
+
 #DecisionTreeClassifier
 
 dtc = DecisionTreeClassifier().fit(X, y)
+
 
 #creating pipeline
 
@@ -110,6 +117,7 @@ grid_search = GridSearchCV(pipe,
                            scoring='balanced_accuracy')
 
 best_model = grid_search.fit(X, y.values)
+
 
 #choosing best model
 
