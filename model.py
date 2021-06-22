@@ -1,6 +1,9 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 import numpy as np
+from sklearn.dummy import DummyClassifier
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from sklearn.linear_model import LogisticRegression
@@ -9,17 +12,31 @@ from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
 from sklearn.svm import SVC
 from sklearn import svm
-
+from imblearn.over_sampling import SMOTE
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 
 
 #import train dataset
 X = pd.read_csv('train_data.csv', header=None)
 
 #import labels
-y = pd.read_csv('train_labels.csv', header=None, names=['y'])
+y = pd.read_csv('train_labels.csv', header=None)
 X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=0)
 
 y = y['y'].apply(lambda x: 1 if x == -1 else 0)
+
+#baseline
+strategies = ['stratified', 'most_frequent', 'prior', 'uniform']
+
+for i in strategies:
+    dummy_clf = DummyClassifier(strategy=i)
+    dummy_clf.fit(X_train, y_train)
+    score = dummy_clf.score(X_train, y_train)
+    dum_labels = np.unique(dummy_clf.predict(X))
+    print(f'For {i} strategy score is {score}')
+    plt.bar(i, score)
 
 #scale data
 scaler = StandardScaler()
