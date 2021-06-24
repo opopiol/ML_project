@@ -35,7 +35,8 @@ from sklearn.preprocessing import MinMaxScaler
 #pip install neptune-notebooks
 
 import neptune.new as neptune
-#run = neptune.init(project='opopiol/ML-project')
+
+#neptune
 run = neptune.init(project='opopiol/ML-project',
                    api_token='eyJhcGlfYWRkcmVzcyI6Imh0dHBzOi8vYXBwLm5lcHR1bmUuYWkiLCJhcGlfdXJsIjoiaHR0cHM6Ly9hcHAubmVwdHVuZS5haSIsImFwaV9rZXkiOiI5YjIyYjU2ZS0wMTc5LTQ3NWUtOWZkZC05OTg2YzI1M2VkNDUifQ==') # your credentials
 
