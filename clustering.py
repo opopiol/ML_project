@@ -70,6 +70,7 @@ X_pca
 #final_pca = pd.concat([final_pca_df, y_train], axis = 1)
 #final_pca
 
+
 sns.set_palette('Set1')
 
 plt.figure(figsize=(8,8))
