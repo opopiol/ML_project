@@ -1,26 +1,10 @@
-import pandas as pd
-from sklearn.model_selection import train_test_split
 import numpy as np
-from sklearn.dummy import DummyClassifier
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from sklearn.decomposition import PCA
-from sklearn.linear_model import LogisticRegression
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.pipeline import Pipeline
-from sklearn.model_selection import GridSearchCV
-from sklearn.svm import SVC
-from sklearn import svm
-from imblearn.over_sampling import SMOTE
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier, VotingClassifier
-import io
-from sklearn.cluster import KMeans
-from sklearn.metrics import accuracy_score
 from sklearn.manifold import TSNE
-from sklearn.metrics import confusion_matrix
+
 import neptune.new as neptune
 #run = neptune.init(project='opopiol/ML-project')
 run = neptune.init(project='opopiol/ML-project',
